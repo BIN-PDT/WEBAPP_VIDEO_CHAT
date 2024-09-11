@@ -24,7 +24,7 @@ let joinAndDisplayLocalStream = async () => {
 
 	let player = `
                 <div id="user-container-${UID}" class="video-container">
-                    <div class="username-wrapper"><span class="user-name"></span></div>
+                    <div class="username-wrapper"><span class="user-name">USERNAME</span></div>
                     <div id="user-${UID}" class="video-player"></div>
                 </div>`;
 	document
@@ -48,7 +48,7 @@ let handleUserJoined = async (user, mediaType) => {
 
 		player = `
             <div id="user-container-${user.uid}" class="video-container">
-                <div class="username-wrapper"><span class="user-name"></span></div>
+                <div class="username-wrapper"><span class="user-name">USERNAME</span></div>
                 <div id="user-${user.uid}" class="video-player"></div>
             </div>`;
 		document

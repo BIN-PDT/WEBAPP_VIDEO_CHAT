@@ -7,7 +7,7 @@
     <section id="form-container">
         <img id="logo" src="{% static "images/chat-icon.png" %}" alt="">
 
-        <div>
+        <div id="welcome-message">
             <h1>Welcome to MyChat</h1>
             <p>A group video calling platform made just for you!</p>
         </div>
@@ -17,6 +17,12 @@
                 <input
                     name="room"
                     placeholder="Enter a room name" />
+            </div>
+
+            <div class="form-field">
+                <input
+                    name="name"
+                    placeholder="Enter your name" />
             </div>
 
             <div class="form-field">
@@ -32,6 +38,7 @@
             e.preventDefault();
 
             let room = e.target.room.value.toUpperCase();
+            let name = e.target.name.value
 
             let response = await fetch(`/get_token/?channel=${room}`);
             let data = await response.json();
@@ -39,6 +46,7 @@
             sessionStorage.setItem("UID", data.uid);
             sessionStorage.setItem("token", data.token);
             sessionStorage.setItem("room", room);
+            sessionStorage.setItem("name", name);
     
             window.open("/room/", "_self");
         };
