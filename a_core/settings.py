@@ -114,3 +114,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# AGORA CONFIGURATION.
+
+AGORA_APP_ID = "ad8ffeb7867249ec846df7e987dd4807"
+
+AGORA_APP_CERTIFICATE = "1ed3d0c043b74d4cbe8fade964fd0cda"
+
+AGORA_EXPIRATION_TIME_IN_SECONDS = 3600
