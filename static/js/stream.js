@@ -64,3 +64,44 @@ let handleUserLeft = async (user) => {
 };
 
 joinAndDisplayLocalStream();
+
+// CONTROL BUTTONS.
+let leaveAndRemoveLocalStream = async () => {
+	for (let i = 0; localTracks.length > i; i++) {
+		localTracks[i].stop();
+		localTracks[i].close();
+	}
+
+	await client.leave();
+	window.open("/", "_self");
+};
+
+let toggleMicrophone = async (e) => {
+	if (localTracks[0].muted) {
+		await localTracks[0].setMuted(false);
+		e.target.style.backgroundColor = "#fff";
+	} else {
+		await localTracks[0].setMuted(true);
+		e.target.style.backgroundColor = "rgb(255, 80, 80, 1)";
+	}
+};
+
+let toggleCamera = async (e) => {
+	if (localTracks[1].muted) {
+		await localTracks[1].setMuted(false);
+		e.target.style.backgroundColor = "#fff";
+	} else {
+		await localTracks[1].setMuted(true);
+		e.target.style.backgroundColor = "rgb(255, 80, 80, 1)";
+	}
+};
+
+document
+	.getElementById("button-leave")
+	.addEventListener("click", leaveAndRemoveLocalStream);
+document
+	.getElementById("button-microphone")
+	.addEventListener("click", toggleMicrophone);
+document
+	.getElementById("button-camera")
+	.addEventListener("click", toggleCamera);

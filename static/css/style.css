@@ -56,3 +56,26 @@ body {
 .video-player > * {
 	border-radius: 5px;
 }
+
+#controls-wrapper {
+	position: fixed;
+	bottom: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	column-gap: 1em;
+}
+
+.control-icon {
+	height: 24px;
+	width: 24px;
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: #fff;
+	box-shadow: var(--shaddow);
+}
+
+#button-leave {
+	background-color: rgb(255, 80, 80, 1);
+}
