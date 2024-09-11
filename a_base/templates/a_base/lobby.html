@@ -37,16 +37,16 @@
         let handleSubmit = async (e) => {
             e.preventDefault();
 
-            let room = e.target.room.value.toUpperCase();
-            let name = e.target.name.value
+            let room = e.target.room.value.trim().toUpperCase().replace(/\s+/g, " ");
+            let name = e.target.name.value.trim().replace(/\s+/g, " ");
 
             let response = await fetch(`/get_token/?channel=${room}`);
             let data = await response.json();
 
-            sessionStorage.setItem("UID", data.uid);
             sessionStorage.setItem("token", data.token);
             sessionStorage.setItem("room", room);
             sessionStorage.setItem("name", name);
+            sessionStorage.setItem("uid", data.uid);
     
             window.open("/room/", "_self");
         };

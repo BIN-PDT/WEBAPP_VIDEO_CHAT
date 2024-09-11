@@ -1,6 +1,6 @@
 import json
 from time import time
-from random import randint
+from uuid import uuid4
 from agora_token_builder import RtcTokenBuilder
 from django.conf import settings
 from django.http import JsonResponse
@@ -11,7 +11,7 @@ from .models import RoomMember
 
 def get_token(request):
     channel_name = request.GET.get("channel")
-    uid = randint(1, 230)
+    uid = uuid4()
 
     token = RtcTokenBuilder.buildTokenWithUid(
         appId=settings.AGORA_APP_ID,
@@ -37,19 +37,21 @@ def create_member(request):
     data = json.loads(request.body)
 
     RoomMember.objects.get_or_create(
-        name=data["name"], uid=data["UID"], room_name=data["room_name"]
+        room_name=data["room_name"],
+        name=data["name"],
+        uid=data["uid"],
     )
 
     return JsonResponse({"name": data["name"]}, safe=False)
 
 
 def get_member(request):
-    uid = request.GET.get("UID")
     room_name = request.GET.get("room_name")
+    uid = request.GET.get("uid")
 
     member = RoomMember.objects.get(
-        uid=uid,
         room_name=room_name,
+        uid=uid,
     )
 
     return JsonResponse({"name": member.name}, safe=False)
@@ -59,10 +61,10 @@ def get_member(request):
 def delete_member(request):
     data = json.loads(request.body)
 
-    RoomMember.objects.get(
-        name=data["name"],
-        uid=data["UID"],
+    RoomMember.objects.filter(
         room_name=data["room_name"],
+        name=data["name"],
+        uid=data["uid"],
     ).delete()
 
     return JsonResponse({}, safe=False)
