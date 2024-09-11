@@ -1,5 +1,6 @@
 const APP_ID = "ad8ffeb7867249ec846df7e987dd4807";
 const CHANNEL = sessionStorage.getItem("room");
+const NAME = sessionStorage.getItem("name");
 const TOKEN = sessionStorage.getItem("token");
 let UID = Number(sessionStorage.getItem("UID"));
 
@@ -22,9 +23,11 @@ let joinAndDisplayLocalStream = async () => {
 
 	localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
 
+	let member = await createMember();
+
 	let player = `
                 <div id="user-container-${UID}" class="video-container">
-                    <div class="username-wrapper"><span class="user-name">USERNAME</span></div>
+                    <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                     <div id="user-${UID}" class="video-player"></div>
                 </div>`;
 	document
@@ -46,9 +49,11 @@ let handleUserJoined = async (user, mediaType) => {
 			player.remove();
 		}
 
+		let member = await getMember(user);
+
 		player = `
             <div id="user-container-${user.uid}" class="video-container">
-                <div class="username-wrapper"><span class="user-name">USERNAME</span></div>
+                <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                 <div id="user-${user.uid}" class="video-player"></div>
             </div>`;
 		document
@@ -78,6 +83,7 @@ let leaveAndRemoveLocalStream = async () => {
 	}
 
 	await client.leave();
+	await deleteMember();
 	window.open("/", "_self");
 };
 
@@ -110,3 +116,37 @@ document
 document
 	.getElementById("button-camera")
 	.addEventListener("click", toggleCamera);
+
+// AJAX.
+let createMember = async () => {
+	let response = await fetch("/create_member/", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ name: NAME, room_name: CHANNEL, UID: UID }),
+	});
+	let member = await response.json();
+	return member;
+};
+
+let getMember = async (user) => {
+	let response = await fetch(
+		`/get_member/?UID=${user.uid}&room_name=${CHANNEL}`
+	);
+	let member = await response.json();
+	return member;
+};
+
+let deleteMember = async () => {
+	let response = await fetch("/delete_member/", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ name: NAME, room_name: CHANNEL, UID: UID }),
+	});
+	await response.json();
+};
+
+window.addEventListener("beforeunload", deleteMember);
