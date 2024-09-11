@@ -27,6 +27,10 @@ body {
 	transform: translate(-50%, -50%);
 }
 
+.form-field > input {
+	text-transform: uppercase !important;
+}
+
 /* ROOM PAGE */
 #video-streams {
 	width: 95%;
